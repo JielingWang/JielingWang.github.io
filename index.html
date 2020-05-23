@@ -145,6 +145,84 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/22/LC-679-24-Game/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jieling Wang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jieling">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/05/22/LC-679-24-Game/" class="post-title-link" itemprop="url">LC#679 24 Game</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-05-22 18:32:53 / Modified: 19:40:21" itemprop="dateCreated datePublished" datetime="2020-05-22T18:32:53-07:00">2020-05-22</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><blockquote>
+<p>You have 4 cards each containing a number from 1 to 9. You need to judge whether they could operated through <code>*</code>, <code>/</code>, <code>+</code>, <code>-</code>, <code>(</code>, <code>)</code> to get the value of 24.</p>
+</blockquote>
+<p>Example:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: [4, 1, 8, 7]</span><br><span class="line">Output: True</span><br><span class="line">Explanation: (8-4) * (7-1) &#x3D; 24</span><br></pre></td></tr></table></figure>
+
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>显然这道题需要穷举出所有的可能性，也就是决策树的遍历过程，用回溯算法，框架在 <a href="https://jielingwang.github.io/2020/05/22/Backtracking-Template/" target="_blank" rel="noopener">这里</a>。</p>
+<p>基于这个框架，这道题需要考虑几个问题：</p>
+<ul>
+<li>track 和 options 分别是什么？</li>
+</ul>
+<p>这道题的 track 和 options 其实可以综合成一个数组。姑且用 options 来表示。每次做选择之前，options 代表当前可以选择的数字，做选择之后，两个数字合成一个数字，重新放到 options 中作为下一轮的备选项。</p>
+<ul>
+<li>结束条件？</li>
+</ul>
+<p>因为 options 在不断更新，因此当 options 只剩一个数字时结束，如果该数字为 24 就可以返回 true，否则返回 false.</p>
+<ul>
+<li>四则运算怎么处理？</li>
+</ul>
+<p>因为每次新生成的数字都跟运算有关，所以每次做选择之后都需要生成 next 列表来记录所有可能的运算结果，再用 for 循环来遍历。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">double</span> eps = <span class="number">0.001</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">judgePoint24</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        List&lt;Double&gt; options = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> n: nums) options.add((<span class="keyword">double</span>) n);</span><br><span class="line">        <span class="keyword">return</span> backtrack(options);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">backtrack</span><span class="params">(List&lt;Double&gt; options)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (options.size() == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (Math.abs(options.get(<span class="number">0</span>) - <span class="number">24</span>) &lt; eps) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; options.size(); i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; j++) &#123;</span><br><span class="line">                <span class="comment">// Generate next list</span></span><br><span class="line">                List&lt;Double&gt; next = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">                Double p1 = options.get(i), p2 = options.get(j);</span><br><span class="line">                next.addAll(Arrays.asList(p1 + p2, p1 - p2, p2 - p1, p1 * p2));</span><br><span class="line">                <span class="keyword">if</span>(Math.abs(p2) &gt; eps)  next.add(p1/p2);</span><br><span class="line">                <span class="keyword">if</span>(Math.abs(p1) &gt; eps)  next.add(p2/p1);</span><br><span class="line">                </span><br><span class="line">                <span class="comment">// Pre-order operations</span></span><br><span class="line">                options.remove(i);</span><br><span class="line">                options.remove(j);</span><br><span class="line">                <span class="keyword">for</span> (Double n : next) &#123;</span><br><span class="line">                    options.add(n);</span><br><span class="line">                    <span class="keyword">if</span> (backtrack(options)) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">                    <span class="comment">// Post-order operations</span></span><br><span class="line">                    options.remove(options.size() - <span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                options.add(j, p2);</span><br><span class="line">                options.add(i, p1);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/22/Backtracking-Template/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -170,7 +248,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-05-22 17:53:09 / Modified: 18:08:35" itemprop="dateCreated datePublished" datetime="2020-05-22T17:53:09-07:00">2020-05-22</time>
+              <time title="Created: 2020-05-22 17:53:09 / Modified: 19:15:51" itemprop="dateCreated datePublished" datetime="2020-05-22T17:53:09-07:00">2020-05-22</time>
             </span>
 
           
@@ -192,10 +270,7 @@
 <li>结束条件：表示到达决策树的底层，无法再做选择的时刻</li>
 </ul>
 <p>可以把路径和选择列表看作决策树上每个节点的属性。<code>backtrack</code> 函数就像指针，在这棵树上游走，所以进入一个节点和离开一个节点时都要正确维护这个节点的属性，所以在递归前需要“做选择”，递归后需要“撤销选择”，相当于遍历一棵树时的前序操作和后序操作。</p>
-<ol start="0">
-<li>框架<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">result = []</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">backtrack</span><span class="params">(track, options)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> meet end condition:</span><br><span class="line">        result.add(track)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> op <span class="keyword">in</span> options:</span><br><span class="line">        remove this op <span class="keyword">from</span> options</span><br><span class="line">        track.add(op)</span><br><span class="line">        backtrack(track, options)</span><br><span class="line">        track.remove(op)</span><br><span class="line">        options.add(op)</span><br></pre></td></tr></table></figure></li>
-</ol>
-
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">result = []</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">backtrack</span><span class="params">(track, options)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> meet end condition:</span><br><span class="line">        result.add(track)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> op <span class="keyword">in</span> options:</span><br><span class="line">        remove this op <span class="keyword">from</span> options</span><br><span class="line">        track.add(op)</span><br><span class="line">        backtrack(track, options)</span><br><span class="line">        track.remove(op)</span><br><span class="line">        options.add(op)</span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -857,95 +932,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/19/LC-366-Find-Leaves-of-Binary-Tree/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jieling Wang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jieling">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/04/19/LC-366-Find-Leaves-of-Binary-Tree/" class="post-title-link" itemprop="url">LC#366 Find Leaves of Binary Tree</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-04-19 14:28:03 / Modified: 15:38:34" itemprop="dateCreated datePublished" datetime="2020-04-19T14:28:03-07:00">2020-04-19</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><blockquote>
-<p>Given a binary tree, collect a tree’s nodes as if you were doing this: collect and remove all leaves, repeat until the tree is empty.</p>
-</blockquote>
-<p>Example:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Input: [1,2,3,4,5]</span><br><span class="line"></span><br><span class="line">            1</span><br><span class="line">           &#x2F; \</span><br><span class="line">          2   3</span><br><span class="line">         &#x2F; \</span><br><span class="line">        4   5</span><br><span class="line"></span><br><span class="line">Output: [[4,5,3],[2],[1]]</span><br></pre></td></tr></table></figure>
-
-<h2 id="关于树的算法框架"><a href="#关于树的算法框架" class="headerlink" title="关于树的算法框架"></a>关于树的算法框架</h2><p>三种遍历方式：</p>
-<ul>
-<li>前序遍历</li>
-<li>中序遍历</li>
-<li>后序遍历</li>
-</ul>
-<p>曾几何时我也并没有把这些简单的遍历方式放在心上，现在做题的时候才发现他们是多么多么的重要，这都是框架啊！正如我们高三生物老师经常说的:”做题的时候脑袋瓜子一定要清清爽爽的!”把这三种遍历方式牢记心中就是清清爽爽的第一步撒！</p>
-<p>以下图中的树为例：<br><img src="/2020/04/19/LC-366-Find-Leaves-of-Binary-Tree/traverse.png" alt=""></p>
-<ul>
-<li>前序遍历</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">preOrder(BSTNode x) &#123;</span><br><span class="line">    <span class="keyword">if</span> (x == <span class="keyword">null</span>) <span class="keyword">return</span>;</span><br><span class="line">    print(x.val);</span><br><span class="line">    preOrder(x.left);</span><br><span class="line">    preOrder(x.right);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output: D B A C F E G</span><br></pre></td></tr></table></figure>
-<ul>
-<li>中序遍历</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">inOrder(BSTNode x) &#123;</span><br><span class="line">    <span class="keyword">if</span> (x == <span class="keyword">null</span>) <span class="keyword">return</span>;</span><br><span class="line">    inOrder(x.left);</span><br><span class="line">    print(x.val);</span><br><span class="line">    inOrder(x.right);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output: A B C D E F G</span><br></pre></td></tr></table></figure>
-<ul>
-<li>后序遍历</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">postOrder(BSTNode x) &#123;</span><br><span class="line">    <span class="keyword">if</span> (x == <span class="keyword">null</span>) <span class="keyword">return</span>;</span><br><span class="line">    postOrder(x.left);</span><br><span class="line">    postOrder(x.right);</span><br><span class="line">    print(x.val);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output: A C B E G F D</span><br></pre></td></tr></table></figure>
-
-<p>综上，算法框架如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">traverse</span><span class="params">(BSTNode root)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Do something preorder</span></span><br><span class="line">    traverse(root.left);</span><br><span class="line">    <span class="comment">// Do something inorder</span></span><br><span class="line">    traverse(root.right);</span><br><span class="line">    <span class="comment">// Do something postorder</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="本题解答"><a href="#本题解答" class="headerlink" title="本题解答"></a>本题解答</h2><p>本题中我们需要一层一层地收集所有叶子节点并放进相对应层数的链表中，属于后序操作。放入哪一层链表可以通过获取其 height 得到。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; findLeaves(TreeNode root) &#123;</span><br><span class="line">        List&lt;List&lt;Integer&gt;&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        helper(list, root);</span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">helper</span><span class="params">(List&lt;List&lt;Integer&gt;&gt; list, TreeNode root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (root == <span class="keyword">null</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> left = helper(list, root.left);</span><br><span class="line">        <span class="keyword">int</span> right = helper(list, root.right);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Do something postorder</span></span><br><span class="line">        <span class="keyword">int</span> height = Math.max(left, right) + <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// if height &gt;= list.size(), means we need to add new list</span></span><br><span class="line">        <span class="keyword">if</span> (height &gt;= list.size()) &#123;</span><br><span class="line">            list.add(<span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line">        &#125;</span><br><span class="line">        list.get(height).add(root.val);</span><br><span class="line">        <span class="keyword">return</span> height;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1015,7 +1001,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
