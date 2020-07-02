@@ -145,6 +145,110 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/02/LC-284-Peeking-Iterator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jieling Wang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jieling">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/02/LC-284-Peeking-Iterator/" class="post-title-link" itemprop="url">LC#284 Peeking Iterator</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-07-02 12:59:17 / Modified: 14:05:57" itemprop="dateCreated datePublished" datetime="2020-07-02T12:59:17-07:00">2020-07-02</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>Given an Iterator class interface with methods: <code>next()</code> and <code>hasNext()</code>, design and implement a PeekingIterator that support the <code>peek()</code> operation – it essentially peek() at the element that will be returned by the next call to next().</p>
+<h2 id="About-Iterator"><a href="#About-Iterator" class="headerlink" title="About Iterator"></a>About Iterator</h2><p>Some interesting properties for Iterator</p>
+<ul>
+<li>It only needs to know how to get the next item</li>
+</ul>
+<p>Which means, <strong>it doesnt need to store the entire data in memory</strong> if we dont need the entire data structure.</p>
+<p>Here is an example for a linked list iterator</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinkedListIterator</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, head)</span>:</span></span><br><span class="line">        self._node = head</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hasNext</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._node <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">next</span><span class="params">(self)</span>:</span></span><br><span class="line">        res = self._node.value</span><br><span class="line">        self._node = self._node.next</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+<p>Notice that we discard the current node absolutely and replace it with the next one as items are consumed. This means that if we are simply iterating a Linked List and dont ever need to go back to the head, we only need to <strong>keep one value around at a time</strong>.</p>
+<ul>
+<li>It can represent sequences without using a data structure</li>
+</ul>
+<p>Here is an example for a range iteator:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RangeIterator</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, min, max)</span>:</span></span><br><span class="line">        self._max = max</span><br><span class="line">        self._curr = min</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hasNext</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._curr &lt; self._max</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">next</span><span class="params">(self)</span>:</span></span><br><span class="line">        self._curr += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> self._curr - <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>If we use Array, we would need to allocate a large chunk of memory especially when <code>min</code> and <code>max</code> are far apart. However, by using an <code>Iterator</code>, we can use features like <code>for i in range(40, 20000000)</code> while still retaining the O(1) space of classic <code>for (int i = min; i &lt; max; i++)</code> style loops seen in other languages.</p>
+<ul>
+<li>It can handle an infinite sequence</li>
+</ul>
+<p>Here is an example for squares iterator:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SquaresIterator</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self._n = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hasNext</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">next</span><span class="params">(self)</span>:</span></span><br><span class="line">        res = self._n</span><br><span class="line">        self._curr += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> res ** <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>Notice that this <code>Iterator</code> will never run out of items as we expected, there is always another square after the previous, so this <code>Iterator</code> can gice us as many as we ask from it.</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p>For this problem, we need to support a new method <code>peek()</code> based on classic <code>Iterator</code>. A straight forward way is to store next value, and return it without advancing the iterator when calls <code>peek()</code>, update it and advance the iterator when calls <code>next()</code>.</p>
+<p>Notice that according to the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html" target="_blank" rel="noopener">reference</a> we need to throw <code>NoSuchElementException</code> when implements <code>next()</code> if the iteration has no more elements.</p>
+<p><strong>Tips:</strong></p>
+<ul>
+<li>Be sure to check <code>.hasNext()</code> before set the next to <code>.next()</code></li>
+<li>Use <code>next == null</code> to implement <code>.hasNext()</code></li>
+<li>Remember to throw <code>NoSuchElementException</code> if there is no next item in <code>.next()</code> method.</li>
+</ul>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.NoSuchElementException;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PeekingIterator</span> <span class="keyword">implements</span> <span class="title">Iterator</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Iterator&lt;Integer&gt; iter;</span><br><span class="line">    <span class="keyword">private</span> Integer next = <span class="keyword">null</span>;</span><br><span class="line">    </span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">PeekingIterator</span><span class="params">(Iterator&lt;Integer&gt; iterator)</span> </span>&#123;</span><br><span class="line">	    <span class="comment">// initialize any member here.</span></span><br><span class="line">	    <span class="keyword">if</span> (iterator.hasNext()) &#123;</span><br><span class="line">            next = iterator.next();</span><br><span class="line">        &#125;</span><br><span class="line">        iter = iterator;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">// Returns the next element in the iteration without advancing the iterator.</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Integer <span class="title">peek</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> next;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// hasNext() and next() should behave the same as in the Iterator interface.</span></span><br><span class="line">	<span class="comment">// Override them if needed.</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Integer <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (next == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchElementException();</span><br><span class="line">        &#125;</span><br><span class="line">        Integer res = next;</span><br><span class="line">        next = <span class="keyword">null</span>;</span><br><span class="line">	    <span class="keyword">if</span> (iter.hasNext()) &#123;</span><br><span class="line">            next = iter.next();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	    <span class="keyword">return</span> next != <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>Time Complexity: All methods: O(1)<br>Without considering the methods of <code>Iterator</code> Interface itself.</li>
+<li>Space Complexity: O(1)</li>
+</ul>
+<p><strong>One Concern</strong> (From LeetCode Discuss)</p>
+<p>Using null to check if we have reached the end of iterator is not 100% right. In theory, null could be a valid element.</p>
+<p>So an alternative approach is to use another boolean to indicate end of iterator.</p>
+<p>Here is a solution from others:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.NoSuchElementException;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PeekingIterator</span> <span class="keyword">implements</span> <span class="title">Iterator</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">    Integer next;</span><br><span class="line">    Iterator&lt;Integer&gt; iter;</span><br><span class="line">    <span class="keyword">boolean</span> noSuchElement;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PeekingIterator</span><span class="params">(Iterator&lt;Integer&gt; iterator)</span> </span>&#123;</span><br><span class="line">	    <span class="comment">// initialize any member here.</span></span><br><span class="line">	    iter = iterator;</span><br><span class="line">        advanceIter();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Returns the next element in the iteration without advancing the iterator.</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">peek</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// you should confirm with interviewer what to return/throw</span></span><br><span class="line">        <span class="comment">// if there are no more values</span></span><br><span class="line">        <span class="keyword">return</span> next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// hasNext() and next() should behave the same as in the Iterator interface.</span></span><br><span class="line">    <span class="comment">// Override them if needed.</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (noSuchElement)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchElementException();</span><br><span class="line">        Integer res = next;</span><br><span class="line">        advanceIter();</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> !noSuchElement;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">advanceIter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (iter.hasNext()) &#123;</span><br><span class="line">            next = iter.next();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            noSuchElement = <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><p><a href="https://leetcode.com/problems/peeking-iterator/solution/" target="_blank" rel="noopener">https://leetcode.com/problems/peeking-iterator/solution/</a><br><a href="https://leetcode.com/problems/peeking-iterator/discuss/72558/Concise-Java-Solution" target="_blank" rel="noopener">https://leetcode.com/problems/peeking-iterator/discuss/72558/Concise-Java-Solution</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/28/LC-297-Serialize-and-Deserialize-Binary-Tree/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -844,76 +948,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/22/Backtracking-Template/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jieling Wang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jieling">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/22/Backtracking-Template/" class="post-title-link" itemprop="url">Backtracking Template</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-05-22 17:53:09 / Modified: 19:15:51" itemprop="dateCreated datePublished" datetime="2020-05-22T17:53:09-07:00">2020-05-22</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>根据 <a href="https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%E4%BF%AE%E8%AE%A2%E7%89%88.md" target="_blank" rel="noopener">这篇文章</a> 整理而成，仅供自己学习备忘。</p>
-<p>解决回溯问题，其实就是一个决策树的遍历过程。这里有三个重要概念：</p>
-<ul>
-<li>路径：已经做出的选择</li>
-<li>选择列表：当前可以做的选择</li>
-<li>结束条件：表示到达决策树的底层，无法再做选择的时刻</li>
-</ul>
-<p>可以把路径和选择列表看作决策树上每个节点的属性。<code>backtrack</code> 函数就像指针，在这棵树上游走，所以进入一个节点和离开一个节点时都要正确维护这个节点的属性，所以在递归前需要“做选择”，递归后需要“撤销选择”，相当于遍历一棵树时的前序操作和后序操作。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">result = []</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">backtrack</span><span class="params">(track, options)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> meet end condition:</span><br><span class="line">        result.add(track)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> op <span class="keyword">in</span> options:</span><br><span class="line">        remove this op <span class="keyword">from</span> options</span><br><span class="line">        track.add(op)</span><br><span class="line">        backtrack(track, options)</span><br><span class="line">        track.remove(op)</span><br><span class="line">        options.add(op)</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -979,7 +1017,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
