@@ -175,7 +175,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-07-03 11:03:47 / Modified: 20:54:45" itemprop="dateCreated datePublished" datetime="2020-07-03T11:03:47-07:00">2020-07-03</time>
+              <time title="Created: 2020-07-03 11:03:47 / Modified: 20:56:50" itemprop="dateCreated datePublished" datetime="2020-07-03T11:03:47-07:00">2020-07-03</time>
             </span>
 
           
@@ -197,7 +197,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">NestedInteger</span> </span>&#123;</span><br><span class="line">    <span class="comment">// @return true if this NestedInteger holds a single integer, rather than a nested list.</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isInteger</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="comment">// @return the single integer that this NestedInteger holds, if it holds a single integer</span></span><br><span class="line">    <span class="comment">// Return null if this NestedInteger holds a nested list</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getInteger</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="comment">// @return the nested list that this NestedInteger holds, if it holds a nested list</span></span><br><span class="line">    <span class="comment">// Return null if this NestedInteger holds a single integer</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;NestedInteger&gt; <span class="title">getList</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
-<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Approach-1"><a href="#Approach-1" class="headerlink" title="Approach 1"></a>Approach 1</h3><p>A straight forward way is to flatten the list with recursion at the very beginning (in the constructor), then use <code>next()</code> and <code>hasNext()</code> methods to iterate over this plain list.</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h4 id="Approach-1"><a href="#Approach-1" class="headerlink" title="Approach 1"></a>Approach 1</h4><p>A straight forward way is to flatten the list with recursion at the very beginning (in the constructor), then use <code>next()</code> and <code>hasNext()</code> methods to iterate over this plain list.</p>
 <p>Here is the seudocode for recursion:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">flatList = [];</span><br><span class="line">flattenList(nestedList) &#123;</span><br><span class="line">    <span class="keyword">for</span> (nestedInteger in nestedList) &#123;</span><br><span class="line">        <span class="keyword">if</span> (nestedInteger.isInteger()) &#123;</span><br><span class="line">            flatList.add(nestedInteger.getInteger());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            flattenList(nestedInteger.getList());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -211,17 +211,15 @@
 <p><strong>Complexity Analysis</strong></p>
 <p>N: the total number of integers within the nested list;<br>L: the total number of lists within the nested list;<br>D: the maximum nesting depth.</p>
 <ul>
-<li>Time Complexity:</li>
-</ul>
-<ul>
+<li>Time Complexity:<ul>
 <li>Constructor: O(N + L).<br>For each list within the nested list, there will be one call to <code>flattenList()</code>.Then the loop within <code>flattenList()</code> will iterate n times, where n is the number of integers within that list.</li>
-<li>next(): O(1)</li>
-<li>hasNext(): O(1)</li>
+<li><code>next()</code>: O(1)</li>
+<li><code>hasNext()</code>: O(1)</li>
 </ul>
-<ul>
+</li>
 <li>Space Complexity: O(N + D).<br>First of all, the space of <code>flatList</code> is O(N).<br>Notice that recursive fucntions need to keep track of where they are up to by putting stack frames on the runtime stack, which means we need to determine what the maximum number of stack frames there could be at a time is. <strong>Each time we encounter a nested list, we call <code>flattenList()</code> and a stack frame is added. Each time we finish processing a nested list, <code>flattenList()</code> returns and a stack frame is removed.</strong> Therefore, the maximum number of stack frames on the runtime stack is the <strong>maximum nesting depth</strong>, D.</li>
 </ul>
-<h3 id="Approach-2"><a href="#Approach-2" class="headerlink" title="Approach 2"></a>Approach 2</h3><p>Besides, we can use Stack to solve this problem, to step through the integers, one at a time, keeping track of where we are currently. Each time when we encounter a list, we just unpack it to the top of stack in reverse order. Notice that we put the unpacking process in <code>hasNext()</code> method, here we make sure the top of stack is an integer, not a list.</p>
+<h4 id="Approach-2"><a href="#Approach-2" class="headerlink" title="Approach 2"></a>Approach 2</h4><p>Besides, we can use Stack to solve this problem, to step through the integers, one at a time, keeping track of where we are currently. Each time when we encounter a list, we just unpack it to the top of stack in reverse order. Notice that we put the unpacking process in <code>hasNext()</code> method, here we make sure the top of stack is an integer, not a list.</p>
 <p><strong>Tips:</strong></p>
 <ul>
 <li>Push onto the stack in <strong>reverse</strong> order.</li>
@@ -232,14 +230,12 @@
 <p><strong>Complexity Analysis</strong></p>
 <p>N: the total number of integers within the nested list;<br>L: the total number of lists within the nested list;<br>D: the maximum nesting depth.</p>
 <ul>
-<li>Time Complexity:</li>
-</ul>
-<ul>
+<li>Time Complexity:<ul>
 <li>Constructor: O(N + L).</li>
 <li>next(): O(1) or O(L/N).</li>
 <li>hasNext(): O(1) or O(L/N).<br>If the top of the stack is an integer, it would be O(1).<br>Otherwise, it needs to process the stack until an integer is on the top. For this process, the amortized time complexity can be calculated as below: the total cost O(N + L), divided by the number of times N, we get O(N + L) / N = O(L/N).</li>
 </ul>
-<ul>
+</li>
 <li>Space Complexity: O(N + L).<br>In the worst case, where the top list contains N integers, or L empty lists, it will cost O(N + L) space. Other expensive cases occur when the nesting is very deep. However, it’s useful to remember that D ≤ L (because each layer of nesting requires another list), and so we don’t need to take this into account.</li>
 </ul>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><p><a href="https://leetcode.com/problems/flatten-nested-list-iterator/solution/" target="_blank" rel="noopener">https://leetcode.com/problems/flatten-nested-list-iterator/solution/</a></p>
