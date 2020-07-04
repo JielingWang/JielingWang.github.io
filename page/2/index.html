@@ -150,6 +150,85 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/31/LC-315-Count-of-Smaller-Numbers-After-Self/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jieling Wang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jieling">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/05/31/LC-315-Count-of-Smaller-Numbers-After-Self/" class="post-title-link" itemprop="url">LC#315 Count of Smaller Numbers After Self</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-05-31 15:36:16 / Modified: 16:31:28" itemprop="dateCreated datePublished" datetime="2020-05-31T15:36:16-07:00">2020-05-31</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><blockquote>
+<p>You are given an integer array nums and you have to return a new counts array. The counts array has the property where <code>counts[i]</code> is the number of smaller elements to the right of <code>nums[i]</code>.</p>
+</blockquote>
+<p>Example:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: [5,2,6,1]</span><br><span class="line">Output: [2,1,1,0]</span><br></pre></td></tr></table></figure>
+
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>暴力解很轻松，循环两遍就可以了，时间复杂度是 O(N<sup>2</sup>)</p>
+<p>但是这道题既然出现在这里目标肯定就不是暴力解。题目中提到了所有在这个数之后比它小的数，可以联想到用二叉树的思想。建立一个二叉树，那么所有在这个节点左边的数不就都是小于这个数的了吗？平均的时间复杂度就能降到 O(NlogN)。但是这会带来另一个问题，如果按照正常的顺序建立二叉树，最后怎么按照原始数组的顺序来遍历并生成新的数组呢？ </p>
+<p>所以我们需要倒序建立二叉树。为什么倒序就能成立呢？举个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Input: [4 1 8 2 3 6 7 5]</span><br></pre></td></tr></table></figure>
+
+<p>从最后一个数字 5 开始，我们能组建出下面这棵二叉树：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">       5</span><br><span class="line">      &#x2F; \</span><br><span class="line">    3     7</span><br><span class="line">   &#x2F; \   &#x2F; \</span><br><span class="line">  2   4 6   8</span><br><span class="line"> &#x2F;</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+<p>那么可以看到，对于每一个数，我们要的结果（所有在它后面且比它小的数）都只跟它插入时到底向右走了几次，以及该节点有多少个左节点有关，比如最后插入的 4 ，在插入时的经历如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">5 -&gt; go left, no effect for 4 </span><br><span class="line">  -&gt; 3 -&gt; go right </span><br><span class="line">  -&gt; get to 4, the result should be 2 + 1 &#x3D; 3</span><br><span class="line">     3 is the only smaller element met by 4, plus 1, and 3 has two smaller elements, plus 2</span><br></pre></td></tr></table></figure>
+
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> val, leftSum = <span class="number">0</span>, count = <span class="number">0</span>;</span><br><span class="line">        Node left, right;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(<span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">            val = v;</span><br><span class="line">            left = <span class="keyword">null</span>;</span><br><span class="line">            right = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title">countSmaller</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        Integer[] count = <span class="keyword">new</span> Integer[nums.length];</span><br><span class="line">        <span class="keyword">int</span> n = nums.length;</span><br><span class="line">        <span class="keyword">if</span> (n == <span class="number">0</span>) <span class="keyword">return</span> Arrays.asList(count);</span><br><span class="line">        </span><br><span class="line">        Node root = <span class="keyword">new</span> Node(nums[n - <span class="number">1</span>]);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = n - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)&#123;</span><br><span class="line">            count[i] = insert(root, nums[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Arrays.asList(count);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// return the count of all smaller elements of this number</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">insert</span><span class="params">(Node node, <span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (node.val != num) &#123;</span><br><span class="line">            <span class="keyword">if</span> (num &lt; node.val) &#123;</span><br><span class="line">                <span class="keyword">if</span> (node.left == <span class="keyword">null</span>) node.left = <span class="keyword">new</span> Node(num);</span><br><span class="line">                node.leftSum ++;</span><br><span class="line">                node = node.left;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                sum += node.leftSum + node.count;</span><br><span class="line">                <span class="keyword">if</span> (node.right == <span class="keyword">null</span>) node.right = <span class="keyword">new</span> Node(num);</span><br><span class="line">                node = node.right;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        node.count++;</span><br><span class="line">        <span class="keyword">return</span> sum + node.leftSum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="但是"><a href="#但是" class="headerlink" title="但是"></a>但是</h2><p>但是这个算法并不是最好的，因为无法保证能建立出一个平衡二叉树，受到输入数组的影响较大，所以严格来讲时间复杂度分析为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">best case O(NlogN), worse case O(N*N)</span><br></pre></td></tr></table></figure>
+<p>讨论区给了 <a href="https://leetcode.com/problems/count-of-smaller-numbers-after-self/discuss/76584/Mergesort-solution" target="_blank" rel="noopener">另一种解法</a> ，由 merge sort 发展而来，可以做到严格的 O(NlogN)。是更好的解法。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/24/LC-1074-Number-of-Submatrices-That-Sum-to-Target/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -874,94 +953,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/26/LC-149-Max-Points-on-a-Line/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jieling Wang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jieling">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/04/26/LC-149-Max-Points-on-a-Line/" class="post-title-link" itemprop="url">LC#149 Max Points on a Line</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-04-26 15:40:44 / Modified: 17:17:25" itemprop="dateCreated datePublished" datetime="2020-04-26T15:40:44-07:00">2020-04-26</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><blockquote>
-<p>Given n points on a 2D plane, find the maximum number of points that lie on the same straight line.</p>
-</blockquote>
-<p>Example:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Input: [[1,1],[3,2],[5,3],[4,1],[2,3],[1,4]]</span><br><span class="line">Output: 4</span><br><span class="line">Explanation:</span><br><span class="line">^</span><br><span class="line">|</span><br><span class="line">|  o</span><br><span class="line">|     o        o</span><br><span class="line">|        o</span><br><span class="line">|  o        o</span><br><span class="line">+-------------------&gt;</span><br><span class="line">0  1  2  3  4  5  6</span><br></pre></td></tr></table></figure>
-
-<h2 id="解决思路"><a href="#解决思路" class="headerlink" title="解决思路"></a>解决思路</h2><p>首先需要考虑的一个问题是：怎么确定 a, b, c 三点在一条直线上？显然，只要确定直线 ab 和直线 ac 的斜率相等即可。同时斜率也可以作为这条直线的标识。所以这道题只需要计算出任意两点之间的斜率，用一个 HashMap 存储斜率和其对应点的个数，就可以找到处于同一斜率下的最多的点的个数。所以时间复杂度是 O(N<sup>2</sup>)</p>
-<p>方法并不难，但是实现的时候有一些细节的地方需要考虑清楚：</p>
-<ul>
-<li>对于重复点的处理</li>
-</ul>
-<p>在这道题目中，重复的点是需要算在内的。比如给出的例子中如果有两个[1,1]，那么最后输出的答案就是 5。因为每次是确定一个点作为基准点，计算基准点与剩下其他点之间的斜率，所以如果遇到与基准点重复的点就需要单独处理，因为斜率无法计算。</p>
-<ul>
-<li>斜率的表示</li>
-</ul>
-<p>可以直接用一个数表示，但是就需要讨论水平和垂直直线的情况。这里直接用 x 和 y 最简分数表示，所以要求分子分母的最大公约数。下面的这个 GCD 函数可以作为模板记下来。这里无论 a 和 b 的顺序，计算出来的结果是一样的。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">calGCD</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (b == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> calGCD(b, a % b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>如何避免重复计算</li>
-</ul>
-<p>如果全局用一个 HashMap 实现，就会出现重复计算的问题。比如例子中四个在同一直线上的点，当以第一个点为基准点计算的时候，Map 中该斜率对应的点的个数就是 3，但是当再以第二点为基准点计算的时候，剩下的两个点依然会被算进去，Map 中该斜率对应的点的个数就变成了 5，这是不合理的。</p>
-<p>解决思路有两个：</p>
-<ol>
-<li>每次换基准点之前对 Map 进行清除，用一个 globalMax 变量来记录同斜率最大点数，在每次针对该基准点的所有操作完成后更新。</li>
-<li>HashMap 里不存相同斜率的点的个数，改存一个包含了所有点的 List，如果发现后来的点已经在 List 里了就可以不加。但是这样就需要重新考虑重复点的问题，如何判断一个点是之前已经加过所以不需要重复加到 List 里，还是这个点本身就是重复点所以需要加进去呢？显然第一条思路更好。</li>
-</ol>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxPoints</span><span class="params">(<span class="keyword">int</span>[][] points)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (points.length &lt;= <span class="number">2</span>) <span class="keyword">return</span> points.length;</span><br><span class="line">    </span><br><span class="line">    Map&lt;Integer, Map&lt;Integer, Integer&gt;&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="keyword">int</span> globalMax = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; points.length; i++) &#123;</span><br><span class="line">        map.clear();</span><br><span class="line">        <span class="keyword">int</span> dup = <span class="number">0</span>, localMax = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; points.length; j++) &#123;</span><br><span class="line">            <span class="keyword">int</span> diffx = points[i][<span class="number">0</span>] - points[j][<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">int</span> diffy = points[i][<span class="number">1</span>] - points[j][<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">if</span> (diffx == <span class="number">0</span> &amp;&amp; diffy == <span class="number">0</span>) &#123;</span><br><span class="line">                dup ++;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">int</span> gcd = calGCD(diffx, diffy);</span><br><span class="line">            diffx /= gcd;</span><br><span class="line">            diffy /= gcd;</span><br><span class="line">            <span class="keyword">if</span> (map.containsKey(diffx)) &#123;</span><br><span class="line">                <span class="keyword">int</span> prev = map.get(diffx).getOrDefault(diffy, <span class="number">0</span>);</span><br><span class="line">                map.get(diffx).put(diffy, prev + <span class="number">1</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                map.put(diffx, <span class="keyword">new</span> HashMap&lt;&gt;());</span><br><span class="line">                map.get(diffx).put(diffy, <span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// update max numbers of rest points</span></span><br><span class="line">            localMax = Math.max(localMax, map.get(diffx).get(diffy));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// update max numbers including duplicates and itself</span></span><br><span class="line">        globalMax = Math.max(globalMax, localMax + dup + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> globalMax;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="最近做题有感"><a href="#最近做题有感" class="headerlink" title="最近做题有感"></a>最近做题有感</h2><p>发现很多 Hard 题并不是真的思路很难想到，而是边边角角细枝末节需要考虑的地方太多了。最近做的几个笔试也有同感，edge cases 总是想的不够全面，自己对于各种情况的考虑还是需要加强哇。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1031,7 +1022,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
