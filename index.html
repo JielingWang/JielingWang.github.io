@@ -150,6 +150,95 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/05/LC-393-UTF-8-Validation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jieling Wang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jieling">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/05/LC-393-UTF-8-Validation/" class="post-title-link" itemprop="url">LC#393 UTF-8 Validation</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-07-05 11:28:14 / Modified: 14:52:10" itemprop="dateCreated datePublished" datetime="2020-07-05T11:28:14-07:00">2020-07-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>A character in UTF8 can be from 1 to 4 bytes long, subjected to the following rules:</p>
+<ol>
+<li>For 1-byte character, the first bit is a 0, followed by its unicode code.</li>
+<li>For n-bytes character, the first n-bits are all one’s, the n+1 bit is 0, followed by n-1 bytes with most significant 2 bits being 10.</li>
+</ol>
+<p>Here is how the UTF-8 encoding would work:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Char. number range  |        UTF-8 octet sequence</span><br><span class="line">   (hexadecimal)    |              (binary)</span><br><span class="line">--------------------+---------------------------------------------</span><br><span class="line">0000 0000-0000 007F | 0xxxxxxx</span><br><span class="line">0000 0080-0000 07FF | 110xxxxx 10xxxxxx</span><br><span class="line">0000 0800-0000 FFFF | 1110xxxx 10xxxxxx 10xxxxxx</span><br><span class="line">0001 0000-0010 FFFF | 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx</span><br></pre></td></tr></table></figure>
+<p>Given an array of integers representing the data, return whether it is a valid utf-8 encoding.<br><strong>Note:</strong><br>The input is an array of integers. Only the <strong>least significant 8 bits</strong> of each integer is used to store the data. This means each integer represents only 1 byte of data.</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p>This is not a problem which is difficult to implement, but it does have some challenges on understanding. So firstly we need to clarify the rules of a valid UTF-8 character:</p>
+<ul>
+<li>A valid UTF-8 character can be <code>1 - 4</code> bytes long.</li>
+<li>For a <code>1-byte</code> character, the first bit is a <code>0</code>, followed by its unicode.</li>
+<li>For an <code>n-bytes</code> character, the first <code>n-bits</code> are all ones, the <code>n+1</code> bit is <code>0</code>, followed by <code>n-1</code> bytes with most significant 2 bits being <code>10</code>.</li>
+<li>The input given would be an array of integers containing the data. We have to return if the data in the array represents a valid UTF-8 encoding. The important thing to note here is that the array doesnt contain data for just a single character. As can be seen from the first example, the array can contain data for multiple characters all of which can be valid UTF-8 characters and hence the charset represented by the array is valid.</li>
+<li>Another important thing to note is that the integers in the array can be larger than 255 as well. The highest number that can be represented by 8 bits is 255. So, what do we do if an integer in the array is say, 476? According to the Note in the problem before the examples, we only have to consider the 8 least significant bits of each integer in the array.</li>
+</ul>
+<p>So now we can solve this problem by bit manipulation. Some key points:</p>
+<ul>
+<li>Use <code>while</code> to check how many <code>1</code>s in a certain octet, so that determine how many bytes we need to process.</li>
+<li>Remember that there might be some test cases that more than <code>4-bytes</code> long, which are invalid.</li>
+<li>Be sure to decrease byteNum after each process.</li>
+<li>Use <code>byteNum == 0</code> to ensure the final result.</li>
+</ul>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">validUtf8</span><span class="params">(<span class="keyword">int</span>[] data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> byteNum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> mask1 = <span class="number">1</span> &lt;&lt; <span class="number">7</span>;</span><br><span class="line">        <span class="keyword">int</span> mask2 = <span class="number">1</span> &lt;&lt; <span class="number">6</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; data.length; i++) &#123;</span><br><span class="line">            <span class="comment">// the first byte to process</span></span><br><span class="line">            <span class="keyword">if</span> (byteNum == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">int</span> mask = <span class="number">1</span> &lt;&lt; <span class="number">7</span>;</span><br><span class="line">                <span class="comment">// check how many 1s in this octet</span></span><br><span class="line">                <span class="keyword">while</span> ((mask &amp; data[i]) != <span class="number">0</span>) &#123;</span><br><span class="line">                    byteNum ++;</span><br><span class="line">                    mask = mask &gt;&gt; <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// only 1-byte character</span></span><br><span class="line">                <span class="keyword">if</span> (byteNum == <span class="number">0</span>) <span class="keyword">continue</span>;</span><br><span class="line">                <span class="comment">// more than 4-bytes character, invalid</span></span><br><span class="line">                <span class="keyword">if</span> (byteNum &gt; <span class="number">4</span> || byteNum == <span class="number">1</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// if the first two bits are not 10</span></span><br><span class="line">                <span class="keyword">if</span> (!((data[i] &amp; mask1) != <span class="number">0</span> &amp;&amp; (mask2 &amp; data[i]) == <span class="number">0</span>)) &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            byteNum --;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> byteNum == <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>Time Complexity: O(N)</li>
+<li>Space Complexity: O(1)</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://leetcode.com/problems/utf-8-validation/solution/" target="_blank" rel="noopener">https://leetcode.com/problems/utf-8-validation/solution/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/04/LC-981-Time-Based-Key-Value-Store/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -934,89 +1023,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/15/LC-1239-Maximum-Length-of-a-Concatenated-String-with-Unique-Characters/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jieling Wang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jieling">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/15/LC-1239-Maximum-Length-of-a-Concatenated-String-with-Unique-Characters/" class="post-title-link" itemprop="url">LC#1239 Maximum Length of a Concatenated String with Unique Characters</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-06-15 15:17:21" itemprop="dateCreated datePublished" datetime="2020-06-15T15:17:21-07:00">2020-06-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-06-16 15:57:50" itemprop="dateModified" datetime="2020-06-16T15:57:50-07:00">2020-06-16</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>Given an array of strings <code>arr</code>. String <code>s</code> is a concatenation of a sub-sequence of <code>arr</code> which have <strong>unique characters</strong>. Return the maximum possible length of <code>s</code>.</p>
-</blockquote>
-<p>Example:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: arr &#x3D; [&quot;cha&quot;, &quot;r&quot;, &quot;act&quot;, &quot;ers&quot;]</span><br><span class="line">Output: 6 (chaers)</span><br></pre></td></tr></table></figure>
-
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>首先直观的想法是列举出所有的组合:</p>
-<p><img src="/2020/06/15/LC-1239-Maximum-Length-of-a-Concatenated-String-with-Unique-Characters/all_comb.png" alt="All Combinations"></p>
-<p>从而找到最大长度。</p>
-<p>一般这种通过列举所有组合解决的问题，都能够画出决策树，列举所有组合的过程其实就是用一个指针再这棵决策树上游走的过程，目标是要遍历到每一个节点。</p>
-<p><img src="/2020/06/15/LC-1239-Maximum-Length-of-a-Concatenated-String-with-Unique-Characters/tree.png" alt="Traverse Tree"></p>
-<p>按照之前的 <a href="https://jielingwang.github.io/2020/05/22/Backtracking-Template/" target="_blank" rel="noopener">Backtrack 模板</a> ，遍历决策树时应当维护好每个节点的状态。但是对于这道题，因为最终要找的是全局最值，因此只要遍历到所有节点，记录当前最大值即可，不需要保存所有的状态。因此 pre-order/post-order operation 任选一种操作即可（即基础的 DFS 遍历）。但是通常都是 pre-order 操作，post-order 会很慢。</p>
-<p>那么如何遍历到所有的节点呢？用如下代码即可，遍历顺序即为上图的 DFS 遍历：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// list is the given string list</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">backtrack</span><span class="params">(list, currString, idx)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> max = currString.length();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = idx; i &lt; list.size(); i++) &#123;</span><br><span class="line">        max = Math.max(backtrack(list, currString + list.get(i), i + <span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>但是 max 的取值并不能简单地取为 currString.length() ，需要分类讨论，如果出现重复的字符直接赋值 max 为 0 .</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (idx &gt; arr.size()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">Set&lt;Character&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">char</span> c : curr.toCharArray()) &#123;</span><br><span class="line">    <span class="keyword">if</span> (set.contains(c)) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    set.add(c);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span> max = curr.length();</span><br></pre></td></tr></table></figure>
-
-<p>综上，整体代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxLength</span><span class="params">(List&lt;String&gt; arr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> backtrack(arr, <span class="string">""</span>, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">backtrack</span><span class="params">(List&lt;String&gt; arr, String curr, <span class="keyword">int</span> idx)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (idx &gt; arr.size()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        Set&lt;Character&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">char</span> c : curr.toCharArray()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (set.contains(c)) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">            set.add(c);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> max = curr.length();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = idx; i &lt; arr.size(); i++) &#123;</span><br><span class="line">            max = Math.max(max, backtrack(arr, curr + arr.get(i), i + <span class="number">1</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1086,7 +1092,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
