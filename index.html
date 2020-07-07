@@ -150,6 +150,68 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/06/AFWP-Notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jieling Wang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jieling">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/06/AFWP-Notes/" class="post-title-link" itemprop="url">AFWP Notes</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-07-06 20:57:54 / Modified: 22:30:37" itemprop="dateCreated datePublished" datetime="2020-07-06T20:57:54-07:00">2020-07-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>July 6</strong></p>
+<p><a href="https://github.com/country-regions/country-region-selector" target="_blank" rel="noopener">country-region-selector</a></p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage" target="_blank" rel="noopener">Window.sessionStorage</a><br><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank" rel="noopener">Window.localStorage</a></p>
+<p>The difference is that while data in <code>localStorage</code> doesn’t expire, data in <code>sessionStorage</code> is cleared when the <em>page session</em> ends.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/05/LC-393-UTF-8-Validation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -930,99 +992,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/18/LC-146-LRU-Cache/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jieling Wang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jieling">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/18/LC-146-LRU-Cache/" class="post-title-link" itemprop="url">LC#146 LRU Cache</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-06-18 20:33:17" itemprop="dateCreated datePublished" datetime="2020-06-18T20:33:17-07:00">2020-06-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-06-20 12:13:43" itemprop="dateModified" datetime="2020-06-20T12:13:43-07:00">2020-06-20</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations: get and put.</p>
-</blockquote>
-<p>Example:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">LRUCache cache &#x3D; new LRUCache( 2 &#x2F;* capacity *&#x2F; );</span><br><span class="line"></span><br><span class="line">cache.put(1, 1);</span><br><span class="line">cache.put(2, 2);</span><br><span class="line">cache.get(1);       &#x2F;&#x2F; returns 1</span><br><span class="line">cache.put(3, 3);    &#x2F;&#x2F; evicts key 2</span><br><span class="line">cache.get(2);       &#x2F;&#x2F; returns -1 (not found)</span><br><span class="line">cache.put(4, 4);    &#x2F;&#x2F; evicts key 1</span><br><span class="line">cache.get(1);       &#x2F;&#x2F; returns -1 (not found)</span><br><span class="line">cache.get(3);       &#x2F;&#x2F; returns 3</span><br><span class="line">cache.get(4);       &#x2F;&#x2F; returns 4</span><br></pre></td></tr></table></figure>
-
-<h2 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h2><p>第一种方法可以直接用 Java 中的 LinkedHashMap 来做。其中有几个重要的函数：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LinkedHashMap(<span class="keyword">int</span> initialCapacity, <span class="keyword">float</span> loadFactor, <span class="keyword">boolean</span> accessOrder)</span><br></pre></td></tr></table></figure>
-<p>LinkedHashMap 默认是 insertion order，在这个构造函数中可以设置 accessOrder 为 true，键值就会按照最近访问来排列，这一特性就是用来构造 LRU 的。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">removeEldestEntry</span><span class="params">(Map.Entry&lt;K,V&gt; eldest)</span></span></span><br></pre></td></tr></table></figure>
-<p>该函数会在 put/putAll 等函数中调用，当返回为 true 时代表需要删除最后一个键值。在使用中可以重载这个函数，官方给的例子如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_ENTRIES = <span class="number">100</span>;</span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">removeEldestEntry</span><span class="params">(Map.Entry eldest)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> size() &gt; MAX_ENTRIES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>代码实现如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LRUCache</span> <span class="keyword">extends</span> <span class="title">LinkedHashMap</span>&lt;<span class="title">Integer</span>, <span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> capacity;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LRUCache</span><span class="params">(<span class="keyword">int</span> capacity)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(capacity, .<span class="number">75F</span>, <span class="keyword">true</span>);</span><br><span class="line">        <span class="keyword">this</span>.capacity = capacity;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.getOrDefault(key, -<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.put(key, value);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">removeEldestEntry</span><span class="params">(Map.Entry&lt;Integer, Integer&gt; eldest)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> size() &gt; capacity;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h2><p>可以用 HashMap + DoubleLinkedList 来实现。HashMap 用来存取键值，DoubleLinkedList 用来维护 access order ，越靠近头部表示最近被使用，越靠近尾部表示很久都未被使用。</p>
-<p>所以需要一个 DoubleLinkedList Node 类来记录每个节点的数据：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class Node &#123;</span><br><span class="line">    int key;</span><br><span class="line">    int value;</span><br><span class="line">    Node prev;</span><br><span class="line">    Node next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>需要注意：</strong></p>
-<ul>
-<li>设置 head/tail 两个 pseudo Node 来便于处理空内容的情况。(18-19)</li>
-<li>一定要记得对 head/tail 的 next/prev 进行初始化。(27-28)</li>
-<li>每次 add 都是添加到头部。(63-68)</li>
-<li>moveToHead 函数可以利用先删除再添加的方法。(77-80)</li>
-<li>pop tail 的时候删除的不是 tail ，而是 tail.prev 。(83)</li>
-<li>判断是否 pop tail 是在 put 里。(50-54)</li>
-</ul>
-<p>代码实现如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LRUCache</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// DoubleLinkedList Node</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> key;</span><br><span class="line">        <span class="keyword">int</span> value;</span><br><span class="line">        Node next;</span><br><span class="line">        Node prev;</span><br><span class="line">        </span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.key = key;</span><br><span class="line">            <span class="keyword">this</span>.value = value;</span><br><span class="line">            next = <span class="keyword">null</span>;</span><br><span class="line">            prev = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> Node head;</span><br><span class="line">    <span class="keyword">private</span> Node tail;</span><br><span class="line">    <span class="keyword">private</span> Map&lt;Integer, Node&gt; cache;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> size;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> capacity;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LRUCache</span><span class="params">(<span class="keyword">int</span> capacity)</span> </span>&#123;</span><br><span class="line">        head = <span class="keyword">new</span> Node(-<span class="number">1</span>, -<span class="number">1</span>);</span><br><span class="line">        tail = <span class="keyword">new</span> Node(-<span class="number">1</span>, -<span class="number">1</span>);</span><br><span class="line">        head.next = tail;</span><br><span class="line">        tail.prev = head;</span><br><span class="line">        size = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">this</span>.capacity = capacity;</span><br><span class="line">        cache = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">        Node node = cache.get(key);</span><br><span class="line">        <span class="keyword">if</span> (node == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        moveToHead(node);</span><br><span class="line">        <span class="keyword">return</span> node.value;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">        Node node = cache.get(key);</span><br><span class="line">        <span class="keyword">if</span> (node == <span class="keyword">null</span>) &#123;</span><br><span class="line">            Node newNode = <span class="keyword">new</span> Node(key, value);</span><br><span class="line">            add(newNode);</span><br><span class="line">            cache.put(key, newNode);</span><br><span class="line">            size ++;</span><br><span class="line">            <span class="keyword">if</span> (size &gt; capacity) &#123;</span><br><span class="line">                Node tail = pop();</span><br><span class="line">                cache.remove(tail.key);</span><br><span class="line">                size --;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            node.value = value;</span><br><span class="line">            moveToHead(node);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Helper Functions</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(Node node)</span> </span>&#123;</span><br><span class="line">        node.prev = head;</span><br><span class="line">        node.next = head.next;</span><br><span class="line">        head.next.prev = node;</span><br><span class="line">        head.next = node;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(Node node)</span> </span>&#123;</span><br><span class="line">        Node next = node.next;</span><br><span class="line">        Node prev = node.prev;</span><br><span class="line">        next.prev = prev;</span><br><span class="line">        prev.next = next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">moveToHead</span><span class="params">(Node node)</span> </span>&#123;</span><br><span class="line">        remove(node);</span><br><span class="line">        add(node);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> Node <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Node node = tail.prev;</span><br><span class="line">        remove(node);</span><br><span class="line">        <span class="keyword">return</span> node;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1092,7 +1061,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
