@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://yoursite.com/2020/04/19/LC-366-Find-Leaves-of-Binary-Tree/traverse.png">
 <meta property="article:published_time" content="2020-04-19T21:28:03.000Z">
-<meta property="article:modified_time" content="2020-05-24T20:13:53.596Z">
+<meta property="article:modified_time" content="2020-07-09T00:13:21.538Z">
 <meta property="article:author" content="Jieling Wang">
 <meta property="article:tag" content="LeetCode">
 <meta name="twitter:card" content="summary">
@@ -188,7 +188,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 13:13:53" itemprop="dateModified" datetime="2020-05-24T13:13:53-07:00">2020-05-24</time>
+                <time title="Modified: 2020-07-08 17:13:21" itemprop="dateModified" datetime="2020-07-08T17:13:21-07:00">2020-07-08</time>
               </span>
 
           
@@ -234,6 +234,9 @@
 
 <h2 id="本题解答"><a href="#本题解答" class="headerlink" title="本题解答"></a>本题解答</h2><p>本题中我们需要一层一层地收集所有叶子节点并放进相对应层数的链表中，属于后序操作。放入哪一层链表可以通过获取其 height 得到。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; findLeaves(TreeNode root) &#123;</span><br><span class="line">        List&lt;List&lt;Integer&gt;&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        helper(list, root);</span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">helper</span><span class="params">(List&lt;List&lt;Integer&gt;&gt; list, TreeNode root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (root == <span class="keyword">null</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> left = helper(list, root.left);</span><br><span class="line">        <span class="keyword">int</span> right = helper(list, root.right);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Do something postorder</span></span><br><span class="line">        <span class="keyword">int</span> height = Math.max(left, right) + <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// if height &gt;= list.size(), means we need to add new list</span></span><br><span class="line">        <span class="keyword">if</span> (height &gt;= list.size()) &#123;</span><br><span class="line">            list.add(<span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line">        &#125;</span><br><span class="line">        list.get(height).add(root.val);</span><br><span class="line">        <span class="keyword">return</span> height;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意这里 <code>height</code> 得到的并不是某节点在这棵树当中的深度，而是以 <code>node</code> 作为根节点的这棵树的深度。所以节点 <code>[4,5,3]</code> 作为叶子节点，<code>height</code> 为 <code>0</code>，刚好放入 <code>list.get(0)</code> 的 <code>list</code> 中。</p>
+
     </div>
 
     
