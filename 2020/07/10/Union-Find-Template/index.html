@@ -20,22 +20,21 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="ProblemGiven n pairs of parentheses, write a function to generate all combinations of well-formed parentheses. Example: given n &#x3D; 3, a solution set is: 1234567[  &quot;((()))&quot;,  &quot;(()())&amp;quot">
+  <meta name="description" content="Naive Quick Union12345678910111213141516private int find(int p) &amp;#123;    while (p !&#x3D; parent[p]) &amp;#123;        p &#x3D; parent[p];    &amp;#125;    return p;&amp;#125;boolean isConnected(int p, int q) &amp;#123;    re">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LC#22 Generate Parentheses">
-<meta property="og:url" content="http://yoursite.com/2020/06/27/LC-22-Generate-Parentheses/index.html">
+<meta property="og:title" content="Union Find Template">
+<meta property="og:url" content="http://yoursite.com/2020/07/10/Union-Find-Template/index.html">
 <meta property="og:site_name" content="Jieling">
-<meta property="og:description" content="ProblemGiven n pairs of parentheses, write a function to generate all combinations of well-formed parentheses. Example: given n &#x3D; 3, a solution set is: 1234567[  &quot;((()))&quot;,  &quot;(()())&amp;quot">
+<meta property="og:description" content="Naive Quick Union12345678910111213141516private int find(int p) &amp;#123;    while (p !&#x3D; parent[p]) &amp;#123;        p &#x3D; parent[p];    &amp;#125;    return p;&amp;#125;boolean isConnected(int p, int q) &amp;#123;    re">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/2020/06/27/LC-22-Generate-Parentheses/tree.png">
-<meta property="article:published_time" content="2020-06-28T00:13:53.000Z">
-<meta property="article:modified_time" content="2020-06-28T01:45:38.673Z">
+<meta property="article:published_time" content="2020-07-10T18:11:36.000Z">
+<meta property="article:modified_time" content="2020-07-10T18:28:55.019Z">
 <meta property="article:author" content="Jieling Wang">
-<meta property="article:tag" content="LeetCode">
+<meta property="article:tag" content="Algorithms">
+<meta property="article:tag" content="UnionFind">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/2020/06/27/LC-22-Generate-Parentheses/tree.png">
 
-<link rel="canonical" href="http://yoursite.com/2020/06/27/LC-22-Generate-Parentheses/">
+<link rel="canonical" href="http://yoursite.com/2020/07/10/Union-Find-Template/">
 
 
 <script id="page-configurations">
@@ -48,7 +47,7 @@
   };
 </script>
 
-  <title>LC#22 Generate Parentheses | Jieling</title>
+  <title>Union Find Template | Jieling</title>
   
 
 
@@ -158,7 +157,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/27/LC-22-Generate-Parentheses/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/10/Union-Find-Template/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -171,7 +170,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          LC#22 Generate Parentheses
+          Union Find Template
         </h1>
 
         <div class="post-meta">
@@ -182,7 +181,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-06-27 17:13:53 / Modified: 18:45:38" itemprop="dateCreated datePublished" datetime="2020-06-27T17:13:53-07:00">2020-06-27</time>
+              <time title="Created: 2020-07-10 11:11:36 / Modified: 11:28:55" itemprop="dateCreated datePublished" datetime="2020-07-10T11:11:36-07:00">2020-07-10</time>
             </span>
 
           
@@ -196,16 +195,26 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.</p>
-<p>Example: given n = 3, a solution set is:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &quot;((()))&quot;,</span><br><span class="line">  &quot;(()())&quot;,</span><br><span class="line">  &quot;(())()&quot;,</span><br><span class="line">  &quot;()(())&quot;,</span><br><span class="line">  &quot;()()()&quot;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+        <h2 id="Naive-Quick-Union"><a href="#Naive-Quick-Union" class="headerlink" title="Naive Quick Union"></a>Naive Quick Union</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> p)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (p != parent[p]) &#123;</span><br><span class="line">        p = parent[p];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">isConnected</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> q)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> find(p) == find(q);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">connect</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> q)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = find(p);</span><br><span class="line">    <span class="keyword">int</span> j = find(q);</span><br><span class="line">    parent[i] = j;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p>We can use backtrack for this problem, since obviously we need to list all possible combinations, just kind of like permutaions.</p>
-<p>And then we can draw the traverse tree here:</p>
-<p><img src="/2020/06/27/LC-22-Generate-Parentheses/tree.png" alt=""></p>
-<p>From the above tree we can see that on each node we have two options basically: append <code>&#39;(&#39;</code> or <code>&#39;)&#39;</code>, but for <code>&#39;)&#39;</code>, only when its number not exceed <code>&#39;(&#39;</code> that leads to a valid solution. Also when append <code>&#39;(&#39;</code> we need to check if it exceeds the given number.</p>
-<p>Finally the ending condition is when there is no <code>&#39;(&#39;</code> and <code>&#39;)&#39;</code> left.</p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">generateParenthesis</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        List&lt;String&gt; res = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        backtrack(res, <span class="string">""</span>, <span class="number">0</span>, <span class="number">0</span>, n);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">backtrack</span><span class="params">(List&lt;String&gt; res, String str, <span class="keyword">int</span> open, <span class="keyword">int</span> close, <span class="keyword">int</span> pairs)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (open == pairs &amp;&amp; close == pairs) &#123;</span><br><span class="line">            res.add(str);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (open &lt; pairs) &#123;</span><br><span class="line">            backtrack(res, str + <span class="string">"("</span>, open + <span class="number">1</span>, close, pairs);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (close &lt; open) &#123;</span><br><span class="line">            backtrack(res, str + <span class="string">")"</span>, open, close + <span class="number">1</span>, pairs);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Analysis</strong></p>
+<p>If we have <strong>V</strong> vertices</p>
+<ul>
+<li><strong>E</strong> isConnected calls, each O(<strong>V</strong>).</li>
+<li><strong>V</strong> connect calls, each O(<strong>V</strong>).</li>
+</ul>
+<p>Kruskals: O(<strong>E</strong>log<strong>V</strong> + <strong>EV</strong> + <strong>V<sup>2</sup></strong>) = O(<strong>EV</strong> + <strong>V<sup>2</sup></strong>)</p>
+<h2 id="Weighted-Quick-Union-by-Height"><a href="#Weighted-Quick-Union-by-Height" class="headerlink" title="Weighted Quick Union by Height"></a>Weighted Quick Union by Height</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">connect</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> q)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = find(p);</span><br><span class="line">    <span class="keyword">int</span> j = find(q);</span><br><span class="line">    <span class="keyword">if</span> (i == j) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span> (height[i] &lt; height[j]) &#123;</span><br><span class="line">        parent[i] = j;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (height[i] &gt; height[j]) &#123;</span><br><span class="line">        parent[j] = i;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (height[i] == height[j]) &#123;</span><br><span class="line">        parent[i] = i;</span><br><span class="line">        height[i] += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Analysis</strong></p>
+<p>Keep track of heights with an extra array.</p>
+<p>Worst-case height is log(<strong>V</strong>).</p>
+<ul>
+<li><strong>E</strong> isConnected calls, each O(<strong>V</strong>).</li>
+<li><strong>V</strong> connect calls, each O(<strong>V</strong>).</li>
+</ul>
+<p>Kruskals: O(<strong>E</strong>log<strong>V</strong> + <strong>E</strong>log<strong>V</strong> + <strong>V</strong>log<strong>V</strong>) = O(<strong>E</strong>log<strong>V</strong> + <strong>V</strong>log<strong>V</strong>) = O(<strong>E</strong>log<strong>V</strong>) if <strong>E</strong> &gt; <strong>V</strong></p>
+
     </div>
 
     
@@ -214,7 +223,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+              <a href="/tags/Algorithms/" rel="tag"># Algorithms</a>
+              <a href="/tags/UnionFind/" rel="tag"># UnionFind</a>
           </div>
 
         
@@ -223,13 +233,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/06/21/LC-428-Serialize-and-Deserialize-N-ary-Tree/" rel="prev" title="LC#428 Serialize and Deserialize N-ary Tree">
-      <i class="fa fa-chevron-left"></i> LC#428 Serialize and Deserialize N-ary Tree
+    <a href="/2020/07/06/AFWP-Notes/" rel="prev" title="AFWP Notes">
+      <i class="fa fa-chevron-left"></i> AFWP Notes
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/06/28/LC-297-Serialize-and-Deserialize-Binary-Tree/" rel="next" title="LC#297 Serialize and Deserialize Binary Tree">
-      LC#297 Serialize and Deserialize Binary Tree <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -288,7 +295,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Problem"><span class="nav-number">1.</span> <span class="nav-text">Problem</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Analysis"><span class="nav-number">2.</span> <span class="nav-text">Analysis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code"><span class="nav-number">3.</span> <span class="nav-text">Code</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Naive-Quick-Union"><span class="nav-number">1.</span> <span class="nav-text">Naive Quick Union</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Weighted-Quick-Union-by-Height"><span class="nav-number">2.</span> <span class="nav-text">Weighted Quick Union by Height</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
