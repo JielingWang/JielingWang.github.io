@@ -150,6 +150,110 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/16/LC-269-Alien-Dictionary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jieling Wang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jieling">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/16/LC-269-Alien-Dictionary/" class="post-title-link" itemprop="url">LC#269 Alien Dictionary</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-07-16 20:18:53 / Modified: 23:20:38" itemprop="dateCreated datePublished" datetime="2020-07-16T20:18:53-07:00">2020-07-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>There is a new alien language which uses the latin alphabet. However, the order among letters are unknown to you. You receive a list of non-empty words from the dictionary, where words are sorted lexicographically by the rules of this new language. Derive the order of letters in this language.</p>
+<p>Example:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">[</span><br><span class="line">  &quot;wrt&quot;,</span><br><span class="line">  &quot;wrf&quot;,</span><br><span class="line">  &quot;er&quot;,</span><br><span class="line">  &quot;ett&quot;,</span><br><span class="line">  &quot;rftt&quot;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">Output: &quot;wertf&quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Note:</strong></p>
+<ul>
+<li>You may assume all letters are in lowercase.</li>
+<li>If the order is invalid, return an empty string.</li>
+<li>There may be multiple valid order of letters, return any one of them is fine.</li>
+</ul>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p>In general, there are three steps to solve this problem:</p>
+<ol>
+<li>Extracting dependency rules from the input.</li>
+<li>Building a graph with the dependency rules.</li>
+<li>Topologically sorting the graph.</li>
+</ol>
+<p>The most important point is the topological sort, we can use the stratege that showed below. Which is to add those nodes that have no going into arrow every time.</p>
+<p><img src="/2020/07/16/LC-269-Alien-Dictionary/process.png" alt=""></p>
+<p>So that we can get the following sorting result:</p>
+<p><img src=".//2020/07/16/LC-269-Alien-Dictionary/all_groups_ordering.png" alt=""></p>
+<p>So how to implement this strategy? We can use two maps, one stores the list of adjacent nodes of the key node (just like the common way to build a graph), one stores the number of its pre-nodes (the number of going-into arrows). And with BFS, each time we just poll out one char from the queue, append it to our result (since all the char in the queue just have no going-into arrow), update pre-nodes-map value of its adjacent nodes (decrese by 1), then add the char whose pre-nodes-map value equals to 0 to the queue again.</p>
+<p><strong>Notice:</strong> It is not a good way to extract dependency rules just through the vertically corresponding position (like getting the rules based on all first letters, then based on all second letters). The right way to get the rules is from the first different letter of two adjacent words, which means we get the sequence of every two letters firstly.</p>
+<p><strong>Tips:</strong></p>
+<ul>
+<li>Use <code>.equals()</code> for <code>Integer</code>, dont forget!</li>
+<li>There are two invalid cases:<ol>
+<li>When the latter word shorter than the former one, and they have the same prefix.</li>
+<li>When our final result doesnt contain all characters.</li>
+</ol>
+</li>
+<li>Notice the following process: <ul>
+<li>BFS initialization: add all 0-going-into-arrow nodes in the queue, no need to update <code>preMap</code> here, no need to append these chars to the result <code>sb</code>.</li>
+<li>Every time poll one element from the queue, add this char to the result <code>sb</code>, and for all its adjacents, update their <code>preMap</code>s, and add the 0-going-into-arrow node into the queue.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">alienOrder</span><span class="params">(String[] words)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Step 0: Initialize</span></span><br><span class="line">        <span class="comment">// Use preMap to track how many other chars go into the current char</span></span><br><span class="line">        Map&lt;Character, List&lt;Character&gt;&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        Map&lt;Character, Integer&gt; preMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (String s : words) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">char</span> c : s.toCharArray()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (!preMap.containsKey(c)) &#123;</span><br><span class="line">                    map.put(c, <span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line">                    preMap.put(c, <span class="number">0</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// Step 1: Build the graph</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; words.length; i++) &#123;</span><br><span class="line">            String a = words[i - <span class="number">1</span>];</span><br><span class="line">            String b = words[i];</span><br><span class="line">            <span class="keyword">if</span> (a.length() &gt; b.length() &amp;&amp; a.startsWith(b)) <span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">            <span class="keyword">if</span> (b.startsWith(a)) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span> (a.charAt(j) == b.charAt(j)) j++;</span><br><span class="line">            <span class="keyword">char</span> ac = a.charAt(j);</span><br><span class="line">            <span class="keyword">char</span> bc = b.charAt(j);</span><br><span class="line">            map.get(ac).add(bc);</span><br><span class="line">            preMap.put(bc, preMap.get(bc) + <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// Step: BFS</span></span><br><span class="line">        StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        Queue&lt;Character&gt; queue = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (Character c : map.keySet()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (preMap.get(c).equals(<span class="number">0</span>)) &#123;</span><br><span class="line">                queue.offer(c);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (!queue.isEmpty()) &#123;</span><br><span class="line">            Character c = queue.poll();</span><br><span class="line">            sb.append(c);</span><br><span class="line">            <span class="keyword">for</span> (Character next : map.get(c)) &#123;</span><br><span class="line">                preMap.put(next, preMap.get(next) - <span class="number">1</span>);</span><br><span class="line">                <span class="keyword">if</span> (preMap.get(next).equals(<span class="number">0</span>)) queue.offer(next);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// invalid case</span></span><br><span class="line">        <span class="keyword">if</span> (sb.length() &lt; preMap.size()) <span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Complexity Analysis</strong></p>
+<p>N: the total number of strings in the input list.<br>C: the total length of all the words in the input list, added together.<br>U: the total number of unique letters in the alien alphabet. (26 in this problem)</p>
+<ul>
+<li>Time Complexity: O(C) (worst case, check every chars)</li>
+<li>Space Comlexity: O(1) or O(U + min(U<sup>2</sup>, N)) (Mostly for the adjacency list)</li>
+</ul>
+<p>For more detailed analysis, go to the link of reference. </p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://leetcode.com/problems/alien-dictionary/solution/" target="_blank" rel="noopener">https://leetcode.com/problems/alien-dictionary/solution/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/16/LC-166-Fraction-to-Recurring-Decimal/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -952,96 +1056,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/02/LC-1095-Find-in-Mountain-Array/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jieling Wang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jieling">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/02/LC-1095-Find-in-Mountain-Array/" class="post-title-link" itemprop="url">LC#1095 Find in Mountain Array</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-07-02 16:34:37" itemprop="dateCreated datePublished" datetime="2020-07-02T16:34:37-07:00">2020-07-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-03 10:54:30" itemprop="dateModified" datetime="2020-07-03T10:54:30-07:00">2020-07-03</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>Given a mountain array <code>mountainArr</code>, return the <strong>minimum</strong> <code>index</code> such that <code>mountainArr.get(index) == target</code>.  If such an <code>index</code> doesnt exist, return <code>-1</code>.</p>
-<p><strong>You cant access the mountain array directly</strong>. You may only access the array using a <code>MountainArray</code> interface:</p>
-<ul>
-<li><code>MountainArray.get(k)</code> returns the element of the array at index <code>k</code> (0-indexed).</li>
-<li><code>MountainArray.length()</code> returns the length of the array.</li>
-</ul>
-<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p>There are three steps in total to solve this problem:</p>
-<ol>
-<li>Find the peak of this mountain array</li>
-<li>Find the target in left of the peak</li>
-<li>Find the target in right of the peak</li>
-</ol>
-<p>Also for each step, we could use binary search.</p>
-<p><strong>Tips:</strong></p>
-<ul>
-<li>When finds the peak, using <code>while(left &lt; right)</code> can lead to less <code>MountainArray.get()</code> calls than <code>while(left &lt;= right)</code>. Im not sure if that is always right, but the times of calls do decrease after changing.</li>
-<li>A tip from @lee215:<br>If I want find the index, I always use <code>while (left &lt; right)</code><br>If I may return the index during the search, I’ll use <code>while (left &lt;= right)</code></li>
-</ul>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findInMountainArray</span><span class="params">(<span class="keyword">int</span> target, MountainArray mountainArr)</span> </span>&#123;</span><br><span class="line">        <span class="comment">/** Find the peak */</span></span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>; </span><br><span class="line">        <span class="keyword">int</span> right = mountainArr.length() - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> peak = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span> (mountainArr.get(mid) &lt; mountainArr.get(mid + <span class="number">1</span>)) &#123;</span><br><span class="line">                left = mid + <span class="number">1</span>;</span><br><span class="line">                peak = left;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                right = mid;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (mountainArr.get(peak) == target) <span class="keyword">return</span> peak;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">/** Find the target in left of the peak */</span></span><br><span class="line">        left = <span class="number">0</span>;</span><br><span class="line">        right = peak - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span> (mountainArr.get(mid) == target) &#123;</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mountainArr.get(mid) &lt; target) &#123;</span><br><span class="line">                left = mid + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mountainArr.get(mid) &gt; target) &#123;</span><br><span class="line">                right = mid - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">/** Find the target in right of the peak */</span></span><br><span class="line">        left = peak + <span class="number">1</span>;</span><br><span class="line">        right = mountainArr.length() - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span> (mountainArr.get(mid) == target) &#123;</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mountainArr.get(mid) &gt; target) &#123;</span><br><span class="line">                left = mid + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mountainArr.get(mid) &lt; target) &#123;</span><br><span class="line">                right = mid - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>Complexity Analysis</strong></p>
-<ul>
-<li>Time Complexity: O(logN)</li>
-<li>Space Complexity: O(1)</li>
-</ul>
-<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><p><a href="https://leetcode.com/problems/find-in-mountain-array/discuss/317607/JavaC%2B%2BPython-Triple-Binary-Search" target="_blank" rel="noopener">https://leetcode.com/problems/find-in-mountain-array/discuss/317607/JavaC%2B%2BPython-Triple-Binary-Search</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1111,7 +1125,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">32</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
