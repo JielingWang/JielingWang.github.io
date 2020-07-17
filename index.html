@@ -175,7 +175,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-07-16 20:18:53 / Modified: 23:20:38" itemprop="dateCreated datePublished" datetime="2020-07-16T20:18:53-07:00">2020-07-16</time>
+              <time title="Created: 2020-07-16 20:18:53 / Modified: 23:21:59" itemprop="dateCreated datePublished" datetime="2020-07-16T20:18:53-07:00">2020-07-16</time>
             </span>
 
           
@@ -208,7 +208,7 @@
 <p>The most important point is the topological sort, we can use the stratege that showed below. Which is to add those nodes that have no going into arrow every time.</p>
 <p><img src="/2020/07/16/LC-269-Alien-Dictionary/process.png" alt=""></p>
 <p>So that we can get the following sorting result:</p>
-<p><img src=".//2020/07/16/LC-269-Alien-Dictionary/all_groups_ordering.png" alt=""></p>
+<p><img src="/2020/07/16/LC-269-Alien-Dictionary/all_groups_ordering.png" alt=""></p>
 <p>So how to implement this strategy? We can use two maps, one stores the list of adjacent nodes of the key node (just like the common way to build a graph), one stores the number of its pre-nodes (the number of going-into arrows). And with BFS, each time we just poll out one char from the queue, append it to our result (since all the char in the queue just have no going-into arrow), update pre-nodes-map value of its adjacent nodes (decrese by 1), then add the char whose pre-nodes-map value equals to 0 to the queue again.</p>
 <p><strong>Notice:</strong> It is not a good way to extract dependency rules just through the vertically corresponding position (like getting the rules based on all first letters, then based on all second letters). The right way to get the rules is from the first different letter of two adjacent words, which means we get the sequence of every two letters firstly.</p>
 <p><strong>Tips:</strong></p>
