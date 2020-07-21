@@ -150,6 +150,142 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/20/Sorting/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jieling Wang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jieling">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/20/Sorting/" class="post-title-link" itemprop="url">Sorting</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-07-20 19:28:47 / Modified: 20:40:55" itemprop="dateCreated datePublished" datetime="2020-07-20T19:28:47-07:00">2020-07-20</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Bubble-Sort"><a href="#Bubble-Sort" class="headerlink" title="Bubble Sort"></a>Bubble Sort</h2><p>Compare two elements of unsorted portion one by one, if the former one is bigger than the latter one, swap them.</p>
+<p>Compare <code>n-1</code> times in total.</p>
+<p>Unsorted portion is at the last of the array, so we only need to compare in the range <code>[0, n-i-1)</code>.</p>
+<p>If there is no swap in current loop, we can terminate in advance.</p>
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>Time Complexity: O(N<sup>2</sup>)</li>
+<li>Space Complexity: O(1)</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubbleSort</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = nums.length;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">boolean</span> swapped = <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n - i - <span class="number">1</span>; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (nums[j] &gt; nums[j + <span class="number">1</span>]) &#123;</span><br><span class="line">                swap(nums, j, j + <span class="number">1</span>);</span><br><span class="line">                swapped = <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!swapped) <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Selection-Sort"><a href="#Selection-Sort" class="headerlink" title="Selection Sort"></a>Selection Sort</h2><p>Repeatedly select the smallest remaining item and move it to the end of sorted portion.</p>
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>Time Complexity: O(N<sup>2</sup>)</li>
+<li>Space Complexity: O(1)</li>
+<li>Unstable</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">selectionSort</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> minNum = nums[i];</span><br><span class="line">        <span class="keyword">int</span> minIdx = i;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &lt; nums.length; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (nums[j] &lt; minNum) &#123;</span><br><span class="line">                minNum = nums[j];</span><br><span class="line">                minIdx = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        swap(nums, i, minIdx);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Heap-Sort"><a href="#Heap-Sort" class="headerlink" title="Heap Sort"></a>Heap Sort</h2><p>Instead of rescanning entire array for minimum item, we can maintain a heap to find it fast.</p>
+<p>In-place Bottom-up Heapification. Efficient heap construction by sinking nodes in reverse level order.</p>
+<p>Reapt N times:</p>
+<ol>
+<li>O(log N) Delete max item from the max-heap.</li>
+<li>O(1) Put max item at the end the array.</li>
+</ol>
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>Time Complexity: O(N log N)</li>
+<li>Space Complexity: O(1)</li>
+<li>Unstable</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">heapSort</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = nums.length;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = n - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">        heapify(nums, n, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = n - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">        swap(nums, <span class="number">0</span>, i);</span><br><span class="line">        heapify(nums, i, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">heapify</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> n, <span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> largest = i;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">2</span> * i + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> right = <span class="number">2</span> * i + <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span> (left &lt; n &amp;&amp; nums[left] &gt; nums[largest]) &#123;</span><br><span class="line">        largest = left;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (right &lt; n &amp;&amp; nums[right] &gt; nums[largest]) &#123;</span><br><span class="line">        largest = right;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (largest != i) &#123;</span><br><span class="line">        swap(nums, i, largest);</span><br><span class="line">        heapify(nums, n, largest);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Merge-Sort"><a href="#Merge-Sort" class="headerlink" title="Merge Sort"></a>Merge Sort</h2><p>Merge Sort Steps:</p>
+<ol>
+<li>If array is of size 1, return.</li>
+<li>Merge sort the left half.</li>
+<li>Merge sort the right half.</li>
+<li>Merge the two sorted halves.</li>
+</ol>
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>Time Complexity: O(N log N)</li>
+<li>Space Complexity: O(N)</li>
+<li>Stable</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[] mergeSort(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> start, <span class="keyword">int</span> end) &#123;</span><br><span class="line">    <span class="keyword">if</span> (start &gt;= end) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[] &#123;nums[start]&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> mid = start + (end - start) / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">int</span>[] left = mergeSort(nums, start, mid);</span><br><span class="line">    <span class="keyword">int</span>[] right = mergeSort(nums, mid + <span class="number">1</span>, end);</span><br><span class="line">    <span class="keyword">int</span>[] sorted = <span class="keyword">new</span> <span class="keyword">int</span>[end - start + <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>, p = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (p &lt;= end - start) &#123;</span><br><span class="line">        <span class="keyword">if</span> (i &gt;= left.length) &#123;</span><br><span class="line">            sorted[p] = right[j];</span><br><span class="line">            j ++;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (j &gt;= right.length) &#123;</span><br><span class="line">            sorted[p] = left[i];</span><br><span class="line">            i ++;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (left[i] &lt;= right[j]) &#123;</span><br><span class="line">            sorted[p] = left[i];</span><br><span class="line">            i ++;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            sorted[p] = right[j];</span><br><span class="line">            j ++;</span><br><span class="line">        &#125;</span><br><span class="line">        p ++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sorted;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Insertion-Sort"><a href="#Insertion-Sort" class="headerlink" title="Insertion Sort"></a>Insertion Sort</h2><p>Build a sorted subarray (like selection sort) by using left-neighbor swaps for stability.</p>
+<p>Scan from left to right …</p>
+<ol>
+<li>If an item is out of order with respect to its left-neighbor, swap left.</li>
+<li>Keep on swapping left until the item is in order with respect to its left-neighbor.</li>
+</ol>
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>Time Complexity: O(N<sup>2</sup>)</li>
+<li>Space Complexity: O(1)</li>
+<li>Stable</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Seems like bubble sort and easier</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insertionSort</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i - <span class="number">1</span>; j &gt;= <span class="number">0</span>; j--) &#123;</span><br><span class="line">            <span class="keyword">if</span> (nums[j] &gt; nums[j + <span class="number">1</span>]) &#123;</span><br><span class="line">                swap(nums, j, j + <span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Quick-Sort"><a href="#Quick-Sort" class="headerlink" title="Quick Sort"></a>Quick Sort</h2><p>Naive Quick Sort:</p>
+<ol>
+<li>Partition around a pivot item, e.g. leftmost item.</li>
+<li>Quicksort left side, all keys &lt; pivot.</li>
+<li>Quicksort right side, all keys ≥ pivot.</li>
+</ol>
+<p><strong>Complexity Analysis</strong></p>
+<ul>
+<li>Time Complexity: Normal case O(N log N) Worst case O(N<sup>2</sup>)</li>
+<li>Space Complexity: O(1)</li>
+<li>Stable</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> start, <span class="keyword">int</span> end)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (start &gt;= end) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> pidx = partition(nums, start, end);</span><br><span class="line">    quickSort(nums, start, pidx - <span class="number">1</span>);</span><br><span class="line">    quickSort(nums, pidx + <span class="number">1</span>, end);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">partition</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> start, <span class="keyword">int</span> end)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> pivot = nums[start];</span><br><span class="line">    <span class="keyword">int</span> left = start;</span><br><span class="line">    <span class="keyword">int</span> right = end + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> i = start + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; right) &#123;</span><br><span class="line">        <span class="keyword">if</span> (nums[i] &lt; pivot) &#123;</span><br><span class="line">            left ++;</span><br><span class="line">            i ++;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[i] &gt; pivot) &#123;</span><br><span class="line">            swap(nums, right - <span class="number">1</span>, i);</span><br><span class="line">            right --;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            i ++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// for now: i == right</span></span><br><span class="line">    <span class="comment">// [start+1, left] &lt; pivot</span></span><br><span class="line">    <span class="comment">// [right, end] &gt; pivot</span></span><br><span class="line">    <span class="comment">// [left+1, right-1] == pivot</span></span><br><span class="line">    swap(nums, start, left);</span><br><span class="line">    <span class="keyword">return</span> left;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Counting-Sort"><a href="#Counting-Sort" class="headerlink" title="Counting Sort"></a>Counting Sort</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">countingSort</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> max = Integer.MIN_VALUE;</span><br><span class="line">    <span class="keyword">int</span> min = Integer.MAX_VALUE;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> n : nums) &#123;</span><br><span class="line">        max = Math.max(n, max);</span><br><span class="line">        min = Math.min(n, min);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> count[] = <span class="keyword">new</span> <span class="keyword">int</span>[max - min + <span class="number">1</span>]; </span><br><span class="line">    <span class="keyword">int</span> res[] = <span class="keyword">new</span> <span class="keyword">int</span>[nums.length];</span><br><span class="line">    <span class="comment">// find the number of occurences for each key</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123; </span><br><span class="line">        count[nums[i] - min] ++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// find the starting indices for each key</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; count.length; i++) &#123; </span><br><span class="line">        count[i] += count[i - <span class="number">1</span>]; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// put every key in the correct index of result array</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">        res[count[nums[i] - min] - <span class="number">1</span>] = nums[i];</span><br><span class="line">        count[nums[i] - min] --;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123; </span><br><span class="line">        nums[i] = res[i]; </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/17/LC-773-Sliding-Puzzle/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -929,102 +1065,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/03/LC-42-Trapping-Rain-Water/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jieling Wang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jieling">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/03/LC-42-Trapping-Rain-Water/" class="post-title-link" itemprop="url">LC#42 Trapping Rain Water</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-07-03 21:07:02 / Modified: 23:57:25" itemprop="dateCreated datePublished" datetime="2020-07-03T21:07:02-07:00">2020-07-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.</p>
-<p>Example:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: [0,1,0,2,1,0,1,3,2,1,2,1]</span><br><span class="line">Output: 6</span><br></pre></td></tr></table></figure>
-
-<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h4 id="Approach-1"><a href="#Approach-1" class="headerlink" title="Approach 1"></a>Approach 1</h4><p>For each element in the array, we find the minimum of maximum height of bars on both the sides minus its own height.</p>
-<p>The key point is that it is not a good idea to jump any slot. We have to iterate every single point, this make us consider the height only, so that we dont need to consider the width anymore.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">trap</span><span class="params">(<span class="keyword">int</span>[] height)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = height.length;</span><br><span class="line">        <span class="keyword">if</span> (n &lt;= <span class="number">1</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n - <span class="number">1</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> j = i;</span><br><span class="line">            <span class="keyword">int</span> leftMax = height[i];</span><br><span class="line">            <span class="keyword">int</span> rightMax = height[i];</span><br><span class="line">            <span class="keyword">while</span> (j &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">                leftMax = Math.max(leftMax, height[j]);</span><br><span class="line">                j --;</span><br><span class="line">            &#125;</span><br><span class="line">            j = i;</span><br><span class="line">            <span class="keyword">while</span> (j &lt; n) &#123;</span><br><span class="line">                rightMax = Math.max(rightMax, height[j]);</span><br><span class="line">                j ++;</span><br><span class="line">            &#125;</span><br><span class="line">            ans += Math.min(rightMax, leftMax) - height[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>Complexity Analysis</strong></p>
-<ul>
-<li>Time Complexity: O(N<sup>2</sup>)</li>
-<li>Space Complexity: O(1)</li>
-</ul>
-<h4 id="Approach-2"><a href="#Approach-2" class="headerlink" title="Approach 2"></a>Approach 2</h4><p>Also we can use two pointers here. The key point is that as long as <code>leftMax &lt; rightMax</code>, the water trapped only depends upon leftMax, and similiar is the case when <code>left &gt;= rightMax</code>, which means we dont need to iterate both sides for each element, so that the time complexity can be decreased to O(N).</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">trap</span><span class="params">(<span class="keyword">int</span>[] height)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = height.length;</span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> right = n - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> leftMax = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> rightMax = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">            leftMax = Math.max(leftMax, height[left]);</span><br><span class="line">            rightMax = Math.max(rightMax, height[right]);</span><br><span class="line">            <span class="keyword">if</span> (leftMax &lt; rightMax) &#123;</span><br><span class="line">                ans += leftMax - height[left];</span><br><span class="line">                left ++;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                ans += rightMax - height[right];</span><br><span class="line">                right --;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>Complexity Analysis</strong></p>
-<ul>
-<li>Time Complexity: O(N)</li>
-<li>Space Complexity: O(1)</li>
-</ul>
-<h4 id="Approach-3"><a href="#Approach-3" class="headerlink" title="Approach 3"></a>Approach 3</h4><p>This solution is not so easy to think clearly. Here is where the distance between bars comes in. We keep a stack and iterate over the array. We add the index of current bar to the stack if it is smaller than or equal to the bar at top of stack, which means that the current bar is bounded by the previous bar in the stack. If we found a bar taller than that at the top, we are sure that the bar at the top of the stack is bounded by the current bar and a previous bar in the stack, hence, we can pop it and add resulting trapped water to <code>ans</code>.</p>
-<p>If we use following input as an example:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: [0,1,0,2,1,0,1,3,2,1,2,1]</span><br><span class="line">Output: 6</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/07/03/LC-42-Trapping-Rain-Water/rainwatertrap.png" alt=""></p>
-<p>Here is a demonstration for this approach.</p>
-<p><img src="/2020/07/03/LC-42-Trapping-Rain-Water/demo.png" alt=""></p>
-<p><strong>Tips:</strong></p>
-<ul>
-<li>The stack process should use <code>while</code>!</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">trap</span><span class="params">(<span class="keyword">int</span>[] height)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = height.length;</span><br><span class="line">        Deque&lt;Integer&gt; stack = <span class="keyword">new</span> ArrayDeque&lt;&gt;();</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            <span class="keyword">while</span> (!stack.isEmpty() &amp;&amp; height[i] &gt; height[stack.peek()]) &#123;</span><br><span class="line">                <span class="keyword">int</span> top = stack.pop();</span><br><span class="line">                <span class="keyword">if</span> (stack.isEmpty()) <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">int</span> dist = i - stack.peek() - <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">int</span> bound = Math.min(height[i], height[stack.peek()]) - height[top];</span><br><span class="line">                ans += dist * bound;</span><br><span class="line">            &#125;</span><br><span class="line">            stack.push(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>Complexity Analysis</strong></p>
-<ul>
-<li>Time Complexity: O(N)</li>
-<li>Space Complexity: O(N)</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1094,7 +1134,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
