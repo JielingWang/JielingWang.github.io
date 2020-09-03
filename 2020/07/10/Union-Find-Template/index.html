@@ -28,7 +28,7 @@
 <meta property="og:description" content="Naive Quick Union12345678910111213141516private int find(int p) &amp;#123;    while (p !&#x3D; parent[p]) &amp;#123;        p &#x3D; parent[p];    &amp;#125;    return p;&amp;#125;boolean isConnected(int p, int q) &amp;#123;    re">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-07-10T18:11:36.000Z">
-<meta property="article:modified_time" content="2020-07-10T18:28:55.019Z">
+<meta property="article:modified_time" content="2020-09-03T20:03:21.075Z">
 <meta property="article:author" content="Jieling Wang">
 <meta property="article:tag" content="Algorithms">
 <meta property="article:tag" content="UnionFind">
@@ -179,10 +179,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-07-10 11:11:36 / Modified: 11:28:55" itemprop="dateCreated datePublished" datetime="2020-07-10T11:11:36-07:00">2020-07-10</time>
+              <time title="Created: 2020-07-10 11:11:36" itemprop="dateCreated datePublished" datetime="2020-07-10T11:11:36-07:00">2020-07-10</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-03 13:03:21" itemprop="dateModified" datetime="2020-09-03T13:03:21-07:00">2020-09-03</time>
+              </span>
 
           
 
@@ -204,6 +210,8 @@
 <li><strong>V</strong> connect calls, each O(<strong>V</strong>).</li>
 </ul>
 <p>Kruskals: O(<strong>E</strong>log<strong>V</strong> + <strong>EV</strong> + <strong>V<sup>2</sup></strong>) = O(<strong>EV</strong> + <strong>V<sup>2</sup></strong>)</p>
+<h2 id="Path-Compression"><a href="#Path-Compression" class="headerlink" title="Path Compression"></a>Path Compression</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> p)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (p != parent[p]) &#123;</span><br><span class="line">        parent[p] = parent[parent[p]];</span><br><span class="line">        p = parent[p];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h2 id="Weighted-Quick-Union-by-Height"><a href="#Weighted-Quick-Union-by-Height" class="headerlink" title="Weighted Quick Union by Height"></a>Weighted Quick Union by Height</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">connect</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> q)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = find(p);</span><br><span class="line">    <span class="keyword">int</span> j = find(q);</span><br><span class="line">    <span class="keyword">if</span> (i == j) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span> (height[i] &lt; height[j]) &#123;</span><br><span class="line">        parent[i] = j;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (height[i] &gt; height[j]) &#123;</span><br><span class="line">        parent[j] = i;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (height[i] == height[j]) &#123;</span><br><span class="line">        parent[i] = i;</span><br><span class="line">        height[i] += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>Analysis</strong></p>
@@ -298,7 +306,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Naive-Quick-Union"><span class="nav-number">1.</span> <span class="nav-text">Naive Quick Union</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Weighted-Quick-Union-by-Height"><span class="nav-number">2.</span> <span class="nav-text">Weighted Quick Union by Height</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Naive-Quick-Union"><span class="nav-number">1.</span> <span class="nav-text">Naive Quick Union</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Path-Compression"><span class="nav-number">2.</span> <span class="nav-text">Path Compression</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Weighted-Quick-Union-by-Height"><span class="nav-number">3.</span> <span class="nav-text">Weighted Quick Union by Height</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
